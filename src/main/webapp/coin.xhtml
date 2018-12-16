@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+	<center>
+		<h1>BILLETES</h1>
+	</center>
+	<h:form id="form">
+		<p:link outcome="change" value="Ver como cliente">
+		</p:link>
+		<p:growl id="growl" showDetail="true" sticky="true" />
+		<center>
+			<p:outputLabel rendered="false"
+				value="Ingrese la denominación del billete y la cantidad de billetes que estarán disponibles." />
+
+			<h:panelGrid columns="1">
+				<p:inputText value="#{coinUI.actual.denomination}"
+					placeholder="Denominación" required="true" />
+				<p:inputText value="#{coinUI.actual.amount}" placeholder="Cantidad"
+					required="true" />
+			</h:panelGrid>
+			<br />
+			<p:commandButton action="#{coinUI.save}" process="@form"
+				update="@form" value="#{coinUI.actual.id ne null ? 'Actualizar':'Registrar'}">
+			</p:commandButton>
+			<br /> <br />
+			<h:panelGrid width="30%" id="table">
+				<p:dataTable var="cointemp" value="#{coinUI.coins}">
+					<p:column headerText="Denominación">
+						<h:outputText value="#{cointemp.denomination}" />
+					</p:column>
+					<p:column headerText="Cantidad">
+						<h:outputText value="#{cointemp.amount}" />
+					</p:column>
+					<p:column>
+						<p:commandButton icon="fa fa-fw fa-edit" process="@this"
+							update="@form" action="#{coinUI.edit(cointemp)}" />
+					</p:column>
+					<p:column>
+						<p:commandButton icon="fa fa-fw fa-remove" process="@this"
+							update="@form" action="#{coinUI.delete(cointemp)}">
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:panelGrid>
+		</center>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Si" />
+			<p:commandButton value="No" />
+		</p:confirmDialog>
+	</h:form>
+
+</h:body>
+</html>

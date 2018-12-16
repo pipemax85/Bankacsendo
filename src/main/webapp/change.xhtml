@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+	<center>
+		<h1>TRANSACCIONES</h1>
+	</center>
+	<h:form id="form">
+		<p:link outcome="coin" value="Ver como administrador">
+		</p:link>
+		<p:growl id="growl" showDetail="true" sticky="true" />
+		<center>
+			<h:panelGroup id="container2"
+				rendered="#{changeUI.mostrarResultado eq false}">
+				<h:panelGrid columns="1">
+					<p:inputText value="#{changeUI.valuerequested}"
+						placeholder="Valor a retirar" />
+				</h:panelGrid>
+				<p:commandButton action="#{changeUI.processRequest}" process="@form"
+					update="@form" value="Iniciar Transacción">
+				</p:commandButton>
+				<br />
+				<br />
+			</h:panelGroup>
+			<h:panelGroup id="container" rendered="#{changeUI.mostrarResultado}">
+				<p:commandButton action="#{changeUI.newTransaction}" process="@form"
+					update="@form" value="Iniciar Nueva Transacción">
+				</p:commandButton>
+				<br />
+				<h3><h:outputLabel value="Valor solicitado:  #{changeUI.valuerequested}" /></h3>
+				<center>
+				</center>
+				<h:panelGrid width="30%">
+					<p:dataTable var="car" value="#{changeUI.returncoins}">
+						<f:facet name="header">
+       						 Billetes entregados
+    					</f:facet>
+						<p:column headerText="Denominación">
+							<h:outputText value="#{car.denomination}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText value="#{car.amount}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</h:panelGroup>
+		</center>
+	</h:form>
+
+</h:body>
+</html>
