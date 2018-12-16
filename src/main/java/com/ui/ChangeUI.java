@@ -58,12 +58,6 @@ public class ChangeUI extends BasicUI {
 				return;
 			}
 			int[] nums = combine(coins);
-//			for (int i : nums) {
-//				System.out.println(i);
-//			}
-//			if (coins.size() > 0) {
-//				// return;
-//			}
 			tempanswer = new ArrayList<Integer>();
 			returncoins = new ArrayList<Coin>();
 			try {
@@ -72,7 +66,6 @@ public class ChangeUI extends BasicUI {
 				addWarn("El cajero no puede realizar esta transacción");
 				return;
 			}
-			// System.out.println(totalcoins);
 			if (totalcoins <= 0) {
 				System.out.println(totalcoins);
 				valuerequested = 0;
@@ -93,27 +86,30 @@ public class ChangeUI extends BasicUI {
 				returncoins.get(ind).setAmount(returncoins.get(ind).getAmount() + 1);
 			}
 			addInfo("Se ha calculado correctamente los billetes que se necesitan y su cantidad");
-
-			LogWithdrawalCoin log = new LogWithdrawalCoin();
-			log.setCreatedDate(new Date());
-			log.setId(new Date().getTime());
-			log.setQuantity(valuerequested);
-			svc.save(log);
-
-			Map<Integer, Coin> mapCoins = new HashMap<Integer, Coin>();
-			for (Coin i : coins) {
-				mapCoins.put(i.getDenomination(), i);
-			}
-			for (Coin i : returncoins) {
-				Coin coinUpdate = mapCoins.get(i.getDenomination());
-				coinUpdate.setAmount(coinUpdate.getAmount() - i.getAmount());
-				svc.update(coinUpdate);
-			}
-			addInfo("La cantidad de los billetes disponibles ha sido actualizada y se ha guardado un registro del retiro");
-			mostrarResultado = true;
+			saveLogAndUpdateCoins();
 		} catch (Exception e) {
 			error(e);
 		}
+	}
+
+	private void saveLogAndUpdateCoins() {
+		LogWithdrawalCoin log = new LogWithdrawalCoin();
+		log.setCreatedDate(new Date());
+		log.setId(new Date().getTime());
+		log.setQuantity(valuerequested);
+		svc.save(log);
+
+		Map<Integer, Coin> mapCoins = new HashMap<Integer, Coin>();
+		for (Coin i : coins) {
+			mapCoins.put(i.getDenomination(), i);
+		}
+		for (Coin i : returncoins) {
+			Coin coinUpdate = mapCoins.get(i.getDenomination());
+			coinUpdate.setAmount(coinUpdate.getAmount() - i.getAmount());
+			svc.update(coinUpdate);
+		}
+		addInfo("La cantidad de los billetes disponibles ha sido actualizada y se ha guardado un registro del retiro");
+		mostrarResultado = true;
 	}
 
 	private boolean validateOperation() {
@@ -157,7 +153,6 @@ public class ChangeUI extends BasicUI {
 			}
 			int[] returnArray = new int[sum];
 			int returnArrayIndex = 0;
-			// System.out.println(coins.size());
 			for (int i = 0; i < coins.size(); i++) {
 				int count = coins.get(i).getAmount();
 				while (count != 0) {
