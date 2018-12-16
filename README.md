@@ -21,6 +21,8 @@ En el archivo hibernate.cfg.xml están los datos de acceso a la base de datos, e
 
 ## Consideraciones
 
+Cada vez que se hace una transacción se actualizan las cantidades disponibles, por tanto se recomienda tener eso en cuenta a la hora de hacer pruebas, existe un menú de navegación y se recomienda utilizarlo, por que si se tuvieran dos pestañas abiertas al mismo tiempo hay que tener en cuenta que los datos guardados en la base de datos se consultan al cargar la pestaña de billetes por cuestiones de velocidad y eficiencia.  
+
 Existen dos entidades creadas en la base de datos 
 * COIN:  (Haciendo referencia al nombre del problema original) que es donde se guardan los billetes con sus denominaciones y cantidades.
 * lOGWITHDRAWALCOIN: Es donde se guarda el registro de las transacciones hechas por el cliente.
